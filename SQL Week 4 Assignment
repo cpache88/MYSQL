@@ -1,0 +1,89 @@
+1 - Procedure returns the salary of an employee by name.
+
+DROP PROCEDURE IF EXISTS employees.getEmployeeSalary;
+DELIMITER//
+CREATE PROCEDURE employees.getEmployeeSalary(
+	IN employeeFirstName VARCHAR(20),
+	IN employeeLastName VARCHAR(20)
+)
+
+	SELECT salary
+	FROM employees_with_salary
+	WHERE first_name = employeeFirstName 
+		AND last_name = employeeLastName 
+		AND to_date > NOW();
+//
+DELIMITER;
+CALL getEmployeeSalary("Cesar", "Pacheco");
+
+
+2 - Procedure returns all employees with a salary less than the given minimum salary.
+
+DROP PROCEDURE IF EXISTS employees.getEmployeesWithSalaryLessThan;
+DELIMITER//
+CREATE PROCEDURE employees.getEmployeesWithSalaryLessThan(
+	IN minimumSalary int(3)
+)
+
+	SELECT emp_no, first_name, last_name, salary
+	FROM employees_with_salary
+	WHERE salary > minimumSalary;
+//
+DELIMITER;
+CALL getEmployeesWithSalaryLessThan(90000);
+
+
+
+3 - Procedure returns the title held by an employee name.
+
+DROP PROCEDURE IF EXISTS employees.getTitleOfEmployee;
+DELIMITER//
+
+CREATE PROCEDURE employees.getTitleOfEmployee(
+	IN employeeFirstName VARCHAR(20),
+	IN employeeLastName VARCHAR(20)
+)
+
+
+	SELECT title
+	FROM employees_with_title
+	WHERE first_name = employeefirstname
+		AND last_name = employeeLastName;
+//
+DELIMITER;
+CALL getTitleOfEmployee("Cesar", "Pacheco");
+
+
+4 - Procedure provides a count of current employees by title.
+
+DROP PROCEDURE IF EXISTS employees.countCurrentEmployeesByTitle;
+DELIMITER//
+//
+
+CREATE PROCEDURE employees.countCurrentEmployeesByTitle()
+
+	SELECT title AS Title, COUNT(*) AS "Number of Employees"
+		FROM employees_with_titles
+		WHERE to_date > NOW()
+		GROUP BY title;
+//
+DELIMITER ;
+CALL countCurrentEmployeesByTitle();
+
+
+5 - Procedure returns the hire date of any given employee name.
+
+DROP PROCEDURE IF EXISTS employees.getHireDateOfEmployee;
+DELIMITER//
+
+CREATE PROCEDURE employees.getHireDateOfEmployee(
+	IN employeeFirstName VARCHAR(20),
+	IN employeeLastName VARCHAR(20)
+)
+
+	SELECT hire_date
+	FROM employees_hire_date
+	WHERE hire_date = employeeHireDate
+//
+DELIMITER;
+CALL getHireDateOfEmployee("Cesar", "Pacheco");
